@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Артём Пузанок](https://up.htmlacademy.ru/javascript/16/user/816295).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Ufocoder](https://htmlacademy.ru/profile/id573445).
 
 ---
 
