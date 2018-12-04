@@ -92,7 +92,6 @@ var createComment = function (pictures) {
 };
 
 var renderComments = function (pictures) {
-  commentsListElement.innerHTML = '';
   var fragment = document.createDocumentFragment();
 
   pictures.forEach(function(picture) {
