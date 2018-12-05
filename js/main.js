@@ -25,6 +25,11 @@ var PICTURE_AUTHORS = [
   'Боря'
 ];
 
+var IMAGE_SRC_TEMPLATE = 'img/avatar-{{i}}.svg';
+var IMAGE_ALT = 'Аватар комментатора фотографии';
+var IMAGE_WIDTH = '35';
+var IMAGE_HEIGHT = '35';
+
 var createRandomNumber = function (min, max) {
   return Math.floor(min + (Math.random() * (max + 1 - min)));
 };
@@ -91,20 +96,20 @@ var createPicturesFragment = function (pictures) {
 var createCommentElement = function (pictures) {
   var itemElement = document.createElement('li');
   var imageElement = document.createElement('img');
-  var commentTextElement = document.createElement('p');
+  var textElement = document.createElement('p');
 
   itemElement.classList.add('social-comment');
   imageElement.classList.add('social-picture');
-  commentTextElement.classList.add('social-text');
-  commentTextElement.textContent = pictures;
+  textElement.classList.add('social-text');
+  textElement.textContent = pictures;
 
-  imageElement.src = 'img/avatar-' + createRandomNumber(AVATAR_NUM_MIN, AVATAR_NUM_MAX) + '.svg';
-  imageElement.alt = 'Аватар комментатора фотографии';
-  imageElement.width = '35';
-  imageElement.height = '35';
+  imageElement.src = IMAGE_SRC_TEMPLATE.replace('{{i}}', createRandomNumber(AVATAR_NUM_MIN, AVATAR_NUM_MAX));
+  imageElement.alt = IMAGE_ALT;
+  imageElement.width = IMAGE_WIDTH;
+  imageElement.height = IMAGE_HEIGHT;
 
   itemElement.appendChild(imageElement);
-  itemElement.appendChild(commentTextElement);
+  itemElement.appendChild(textElement);
 
   return itemElement;
 };
@@ -134,10 +139,8 @@ var pictureTemplateElement = document.querySelector('#picture').content;
 var bigPictureElement = document.querySelector('.big-picture');
 
 var bigPictureCommenstsListElement = bigPictureElement.querySelector('.social__comments');
-var bigPictureCommentCountElement = bigPictureElement.querySelector('.social__comment-count')
-    .classList.add('visually-hidden');
-var bigPictureCommentsLoaderElement = bigPictureElement.querySelector('.comments-loader')
-    .classList.add('visually-hidden');
+bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
+bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
 
 var pictures = generatePictures();
 
