@@ -98,9 +98,9 @@ var createCommentElement = function (pictures) {
   var imageElement = document.createElement('img');
   var textElement = document.createElement('p');
 
-  itemElement.classList.add('social-comment');
-  imageElement.classList.add('social-picture');
-  textElement.classList.add('social-text');
+  itemElement.classList.add('social__comment');
+  imageElement.classList.add('social__picture');
+  textElement.classList.add('social__text');
   textElement.textContent = pictures;
 
   imageElement.src = IMAGE_SRC_TEMPLATE.replace('{{i}}', createRandomNumber(AVATAR_NUM_MIN, AVATAR_NUM_MAX));
