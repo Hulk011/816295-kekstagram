@@ -57,6 +57,18 @@ var createRandomComments = function () {
   return result;
 };
 
+var searchDuplicate = function (elem, arr) {
+  var dubl = 0;
+
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === elem) {
+      dubl += 1;
+    }
+  }
+
+  return dubl;
+};
+
 var generatePicture = function (index) {
   return {
     url: PICTURE_URL_TEMPLATE.replace('{{i}}', index),
