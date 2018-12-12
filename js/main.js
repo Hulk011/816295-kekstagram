@@ -259,7 +259,7 @@ var validateHasgtags = function () {
   var splitHashtags = userHashtagsElement.split(' ');
 
   if (splitHashtags.length > 5) {
-    textHashtags.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+    textHashtagsElement.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
   }
 
   for (var i = 0; i < splitHashtags.length; i++) {
@@ -267,27 +267,23 @@ var validateHasgtags = function () {
     var sameHashtags = searchDuplicate(currentHashtag, splitHashtags);
 
     if (sameHashtags > 1) {
-      textHashtags.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+      textHashtagsElement.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
     }
     if (currentHashtag[0] !== '#') {
-      textHashtags.setCustomValidity('Хэш-тег должен начинаться с символа #');
+      textHashtagsElement.setCustomValidity('Хэш-тег должен начинаться с символа #');
     }
     if (currentHashtag.length < 2) {
-      textHashtags.setCustomValidity('Хэш-тег не может состоять только из одного символа');
+      textHashtagsElement.setCustomValidity('Хэш-тег не может состоять только из одного символа');
     }
     if (currentHashtag.length > 20) {
-      textHashtags.setCustomValidity('Максимальная длина одного хэш-тега — 20 символов, включая решётку');
+      textHashtagsElement.setCustomValidity('Максимальная длина одного хэш-тега — 20 символов, включая решётку');
     }
   }
 };
 
 var picturesListElement = document.querySelector('.pictures');
 var pictureTemplateElement = document.querySelector('#picture').content;
-var pictureTemplate = pictureTemplateElement.querySelector('.picture');
 var bigPictureElement = document.querySelector('.big-picture');
-var bigPictureImage = bigPictureElement.querySelector('.big-picture__img');
-var bigPictureImg = bigPictureImage.querySelector('img');
-var likesCount = bigPictureElement.querySelector('.likes-count');
 var bigPictureCloseElement = document.querySelector('#picture-cancel');
 var fileUploadElement = document.querySelector('#upload-file');
 var imgUploadElement = document.querySelector('.img-upload__overlay');
@@ -353,7 +349,7 @@ uploadSubmitElement.addEventListener('click', function () {
 });
 
 textHashtagsElement.addEventListener('input', function () {
-  textHashtags.setCustomValidity('');
+  textHashtagsElement.setCustomValidity('');
 });
 
 effectLevelPinElement.addEventListener('mouseup', function () {
@@ -373,3 +369,4 @@ picturesListElement.appendChild(createPicturesFragment(pictures));
 bigPictureElement.classList.remove('hidden');
 
 renderBigPicture(pictures[0]);
+
