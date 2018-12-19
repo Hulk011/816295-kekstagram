@@ -61,7 +61,7 @@ var generatePicture = function (index) {
   };
 };
 
-var generatePictures = function () {
+var generateDataPictures = function () {
   var pictures = [];
 
   for (var i = 1; i <= PICTURES_QUANTITY; i++) {
@@ -79,16 +79,6 @@ var createPictureElement = function (picture) {
   pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
 
   return pictureElement;
-};
-
-var createPicturesFragment = function (pictures) {
-  var fragment = document.createDocumentFragment();
-
-  pictures.forEach(function (picture) {
-    fragment.appendChild(createPictureElement(picture));
-  });
-
-  return fragment;
 };
 
 var createCommentElement = function (pictures) {
@@ -112,112 +102,102 @@ var createCommentElement = function (pictures) {
   return itemElement;
 };
 
-var renderBigPictureComments = function (comments) {
+var showBigPictureComments = function (comments) {
   var fragment = document.createDocumentFragment();
 
   comments.forEach(function (comment) {
     fragment.appendChild(createCommentElement(comment));
   });
 
+  bigPictureCommenstsListElement.innerHTML = '';
   bigPictureCommenstsListElement.appendChild(fragment);
 };
 
 
-var renderBigPicture = function (picture) {
+var showBigPicture = function (picture) {
   bigPictureElement.querySelector('.big-picture__img img').src = picture.url;
   bigPictureElement.querySelector('.likes-count').textContent = picture.likes;
   bigPictureElement.querySelector('.comments-count').textContent = picture.comments.length;
   bigPictureElement.querySelector('.social__caption').textContent = picture.description;
 
-  renderBigPictureComments(picture.comments);
+  showBigPictureComments(picture.comments);
 };
 
 
-var closeBigPicture = function() {
+var hideBigPicture = function() {
+  bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
 
+  bigPictureElement.classList.add('hidden');
+  /// remove listener
+
+  document.removeEventListener('keydown', onDocumentBigPictureKeydown);
+  bigPictureCloseElement.removeEventListener('click', onBigPictureCancelClick);
 }
 
 var showBigPicture = function(picture) {
-  // renderBigPicture
+  // showBigPicture
+  bigPictureElement.classList.remove('hidden');
   // change css and styles
-
-  // add event listener for document keydown -> closeBigPicture
-  // add event listener for cross element click -> closeBigPicture
+  // add event listener for document keydown -> closeBigPicture // onDocumentBigPictureKeydown
+  // add event listener for cross element click -> closeBigPicture //
+  document.addEventListener('keydown', onDocumentBigPictureKeydown);
+  bigPictureCloseElement.addEventListener('click', onBigPictureCancelClick);
 }
 
-
 var createPictures = function(pictures) {
-
   var fragment = document.createDocumentFragment();
 
-  // pictures.forEach
-   pictures.forEach(function (picture) {
-    fragment.appendChild(createPictureElement(picture));
+  pictures.forEach(function (picture) {
+    var element = createPictureElement(picture);
+    // @TODO: click showBigPicture
+     element.addEventListener('click', function() {
+      showBigPicture(picture)
+     });
+    fragment.appendChild(element);
   });
-  // -> createPictureElement
-  // add event listener for
-  /*
-    pictures.forEach
-      var element = createPictureElement
-      element.addEventListenr click function() {
-        showBigPicture(picture)
-      }
-      fragment <- element
-  picturesElement <- fragment
-*/
+
+  picturesListElement.appendChild(fragment)
 }
 
 var closeForm = function() {
   // remove listenrs
-
   // remove event listener for document keydown
-  bigPictureCloseElement.removeEventListener('keydown', function (evt));
   // remove event listener for cross element click
-  bigPictureCloseElement.removeEventListener('click', function ());
-  // remove event listnere for formEffectLevelPinElement on mouseup
-  formEffectLevelPinElement.removeEventListener('mouseup', function ());
+  document.removeEventListener('keydown', onDocumentFormKeydown);
+  formUploadCloseElement.removeEventListener('click', onFormCloseClick);
+
   // change styles and css classes
-  bigPictureElement.classList.add('hidden');
+  formUploadOverlayElement.classList.add('hidden');
 }
-
-
 
 var openForm = function() {
   /* open/show form popup */
 
   // form selector - change css class
-  bigPictureElement.classList.remove('hidden');
-  // add event listener for document keydown
-  bigPictureCloseElement.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
-      bigPictureElement.classList.add('hidden');
-    }
-  });
-  // add event listener for cross element click
-  bigPictureCloseElement.addEventListener('click', function () {
-  bigPictureElement.classList.add('hidden');
-});
-  // ..
+  formUploadOverlayElement.classList.remove('hidden');
 
-  // add event listnere for formEffectLevelPinElement on mouseup
-  formEffectLevelPinElement.addEventListener('mouseup', function () {
+  document.addEventListener('keydown', onDocumentFormKeydown);
+  formUploadCloseElement.addEventListener('click', onFormCloseClick);
+};
 
-  });
-  // reset effect name value
-  // reset effect level value
+var onFormCloseClick = function() {
+  closeForm()
+}
+var onDocumentFormKeydown = function (evt) {
+  if (evt.keyCode === KEYCODE_ENTER) {
+    closeForm()
+  }
 }
 
-var onFormCancelClick = function(e) {
+var onBigPictureCancelClick = function(e) {
   /* close/hide form popup */
-  bigPictureCloseElement.addEventListener('click', function () {
-    closeForm();
-  })
-  // closeForm()
+  hideBigPicture();
 }
 
-var onDocumentKeydown = function(evt) {
+var onDocumentBigPictureKeydown = function(evt) {
   if (evt.keyCode === KEYCODE_ESC) {
-    closeform();
+    hideBigPicture();
   }
 }
 
@@ -233,31 +213,20 @@ var bigPictureElement = document.querySelector('.big-picture');
 var bigPictureCloseElement = document.querySelector('#picture-cancel');
 var bigPictureCommenstsListElement = bigPictureElement.querySelector('.social__comments');
 
-var fieldUploadElement = /* */;
-
+/// form
+var formUploadOverlayElement = document.querySelector('.img-upload__overlay');
+/// formClose
+var formUploadCloseElement = formUploadOverlayElement.querySelector('.img-upload__cancel');
 // var efffect...Element = select
 
 // defaultEffectValue = efffect...Element.value
 // defaultEffectName = efffect...Element.value
 
 var formEffectLevelPinElement = document.querySelector('.effect-level__pin ');
+var fieldUploadElement = document.querySelector('#upload-file');
 
-// add selector #upload-file
-var uploadFileElement = document.querySelector('#upload-file');
-var pictures = generatePictures();
+var pictures = generateDataPictures();
 
-bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
-bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
+createPictures(pictures)
 
-picturesListElement.appendChild(createPicturesFragment(pictures));
-
-
-renderPictures(pictures)
-// renderBigPicture(pictures[0]); renderBigPicture -> showBigPicture
-
-///
-// on + element + event
-
-// fieldUploadElement.addEventListner change onFieldUploadChange
-// onFieldUploadChange
-// selector #upload-file is changed -> show popup form
+fieldUploadElement.addEventListener('change', onFieldUploadChange)
