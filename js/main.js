@@ -218,6 +218,7 @@ var formUploadOverlayElement = document.querySelector('.img-upload__overlay');
 /// formClose
 var formUploadCloseElement = formUploadOverlayElement.querySelector('.img-upload__cancel');
 // var efffect...Element = select
+var effectLevelPinElement = document.querySelector('.effect-level__pin');
 
 // defaultEffectValue = efffect...Element.value
 // defaultEffectName = efffect...Element.value
@@ -229,4 +230,7 @@ var pictures = generateDataPictures();
 
 createPictures(pictures)
 
-fieldUploadElement.addEventListener('change', onFieldUploadChange)
+fieldUploadElement.addEventListener('change', onFieldUploadChange);
+effectLevelPinElement.addEventListener('mouseup', function () {
+  effectLevelValueElement.setAttribute('value', level);
+});
