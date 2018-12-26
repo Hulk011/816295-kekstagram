@@ -1,3 +1,5 @@
+'use strict';
+
 var AVATAR_NUM_MIN = 1;
 var AVATAR_NUM_MAX = 6;
 
@@ -22,6 +24,9 @@ var PICTURE_AUTHORS = [
   'Женя',
   'Боря'
 ];
+
+var KEYCODE_ENTER = 13;
+var KEYCODE_ESC = 27;
 
 var IMAGE_SRC_TEMPLATE = 'img/avatar-{{i}}.svg';
 var IMAGE_ALT = 'Аватар комментатора фотографии';
@@ -124,113 +129,92 @@ var showBigPicture = function (picture) {
 };
 
 
-var hideBigPicture = function() {
+var hideBigPicture = function () {
   bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
 
   bigPictureElement.classList.add('hidden');
-  /// remove listener
 
   document.removeEventListener('keydown', onDocumentBigPictureKeydown);
   bigPictureCloseElement.removeEventListener('click', onBigPictureCancelClick);
-}
+};
 
-var showBigPicture = function(picture) {
-  // showBigPicture
+var showBigPicture = function (picture) {
   bigPictureElement.classList.remove('hidden');
-  // change css and styles
-  // add event listener for document keydown -> closeBigPicture // onDocumentBigPictureKeydown
-  // add event listener for cross element click -> closeBigPicture //
+
   document.addEventListener('keydown', onDocumentBigPictureKeydown);
   bigPictureCloseElement.addEventListener('click', onBigPictureCancelClick);
-}
+};
 
-var createPictures = function(pictures) {
+var createPictures = function (pictures) {
   var fragment = document.createDocumentFragment();
 
   pictures.forEach(function (picture) {
     var element = createPictureElement(picture);
-    // @TODO: click showBigPicture
-     element.addEventListener('click', function() {
-      showBigPicture(picture)
-     });
+
+    element.addEventListener('click', function () {
+      showBigPicture(picture);
+    });
     fragment.appendChild(element);
   });
 
-  picturesListElement.appendChild(fragment)
-}
+  picturesListElement.appendChild(fragment);
+};
 
-var closeForm = function() {
-  // remove listenrs
-  // remove event listener for document keydown
-  // remove event listener for cross element click
+var closeForm = function () {
   document.removeEventListener('keydown', onDocumentFormKeydown);
   formUploadCloseElement.removeEventListener('click', onFormCloseClick);
 
-  // change styles and css classes
   formUploadOverlayElement.classList.add('hidden');
-}
+};
 
-var openForm = function() {
-  /* open/show form popup */
-
-  // form selector - change css class
+var openForm = function () {
   formUploadOverlayElement.classList.remove('hidden');
 
   document.addEventListener('keydown', onDocumentFormKeydown);
   formUploadCloseElement.addEventListener('click', onFormCloseClick);
 };
 
-var onFormCloseClick = function() {
-  closeForm()
-}
+var onFormCloseClick = function () {
+  closeForm();
+};
+
 var onDocumentFormKeydown = function (evt) {
   if (evt.keyCode === KEYCODE_ENTER) {
-    closeForm()
+    closeForm();
   }
-}
+};
 
-var onBigPictureCancelClick = function(e) {
-  /* close/hide form popup */
+var onBigPictureCancelClick = function () {
   hideBigPicture();
-}
+};
 
-var onDocumentBigPictureKeydown = function(evt) {
+var onDocumentBigPictureKeydown = function (evt) {
   if (evt.keyCode === KEYCODE_ESC) {
     hideBigPicture();
   }
-}
+};
 
-var onFieldUploadChange = function(evt) {
+var onFieldUploadChange = function () {
   openForm();
-}
-
-////
+};
 
 var picturesListElement = document.querySelector('.pictures');
 var pictureTemplateElement = document.querySelector('#picture').content;
 var bigPictureElement = document.querySelector('.big-picture');
 var bigPictureCloseElement = document.querySelector('#picture-cancel');
 var bigPictureCommenstsListElement = bigPictureElement.querySelector('.social__comments');
-
-/// form
 var formUploadOverlayElement = document.querySelector('.img-upload__overlay');
-/// formClose
 var formUploadCloseElement = formUploadOverlayElement.querySelector('.img-upload__cancel');
-// var efffect...Element = select
-var effectLevelPinElement = document.querySelector('.effect-level__pin');
-
-// defaultEffectValue = efffect...Element.value
-// defaultEffectName = efffect...Element.value
-
-var formEffectLevelPinElement = document.querySelector('.effect-level__pin ');
+var formEffectLevelPinElement = document.querySelector('.effect-level__pin');
+var effectLevelValueElement = document.querySelector('.effect-level__value');
 var fieldUploadElement = document.querySelector('#upload-file');
 
 var pictures = generateDataPictures();
 
-createPictures(pictures)
+createPictures(pictures);
 
 fieldUploadElement.addEventListener('change', onFieldUploadChange);
-effectLevelPinElement.addEventListener('mouseup', function () {
+formEffectLevelPinElement.addEventListener('mouseup', function () {
   effectLevelValueElement.setAttribute('value', level);
 });
